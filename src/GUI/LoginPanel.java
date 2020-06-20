@@ -1,21 +1,14 @@
 package GUI;
 
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import java.awt.Font;
-import javax.swing.JPasswordField;
-import java.awt.Color;
-import javax.swing.UIManager;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 
 public class LoginPanel extends JPanel {
 	private JTextField usernameTextField;
 	private JPasswordField passwordTextField;
-
-	/**
-	 * Create the panel.
-	 */
+	private JLabel usernameLabel,errorLabel,passwordLabel;
+	private JButton iniSesionButton,regButton;
 	public LoginPanel() {
 		setBackground(UIManager.getColor("Button.background"));
 		setLayout(null);
@@ -25,27 +18,27 @@ public class LoginPanel extends JPanel {
 		add(usernameTextField);
 		usernameTextField.setColumns(10);
 		
-		JLabel usernameLabel = new JLabel("USERNAME:");
+		usernameLabel = new JLabel("USERNAME:");
 		usernameLabel.setFont(new Font("Dialog", Font.BOLD, 18));
 		usernameLabel.setBounds(141, 193, 129, 34);
 		add(usernameLabel);
 		
-		JButton iniSesionButton = new JButton("Iniciar Sesion");
+		iniSesionButton = new JButton("Iniciar Sesion");
 		iniSesionButton.setBackground(Color.LIGHT_GRAY);
 		iniSesionButton.setFont(new Font("Dialog", Font.BOLD, 18));
 		iniSesionButton.setBounds(172, 381, 177, 34);
 		add(iniSesionButton);
 		
-		JLabel errorLabel = new JLabel("");
+		errorLabel = new JLabel("");
 		errorLabel.setBounds(346, 165, 250, 27);
 		add(errorLabel);
 		
-		JLabel passwordLabel = new JLabel("PASSWORD:");
+		passwordLabel = new JLabel("PASSWORD:");
 		passwordLabel.setFont(new Font("Dialog", Font.BOLD, 18));
 		passwordLabel.setBounds(141, 259, 129, 34);
 		add(passwordLabel);
 		
-		JButton regButton = new JButton("Registrarse");
+		regButton = new JButton("Registrarse");
 		regButton.setBackground(new Color(153, 255, 255));
 		regButton.setFont(new Font("Dialog", Font.BOLD, 18));
 		regButton.setBounds(361, 381, 177, 34);
@@ -55,5 +48,10 @@ public class LoginPanel extends JPanel {
 		passwordTextField.setBounds(346, 262, 250, 34);
 		add(passwordTextField);
 
+	}
+	//anhadimos listeners a los botones de loginPanel	
+	public void addActionListener(ActionListener a) {
+		iniSesionButton.addActionListener(a);
+		regButton.addActionListener(a);
 	}
 }

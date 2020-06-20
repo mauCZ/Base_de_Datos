@@ -12,7 +12,7 @@ public class Conexion{
 	/*
 	 * Prender conexion
 	 */
-	public void conectar() throws SQLException{
+public void conectar() throws SQLException{
 		String url = "jdbc:postgresql://localhost:5432/postgres";
 		conexion = DriverManager.getConnection(url,username,password);
 	}
