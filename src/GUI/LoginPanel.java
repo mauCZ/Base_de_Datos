@@ -60,4 +60,10 @@ public class LoginPanel extends JPanel {
 	public JButton getRegistrarseButton() {
 		return regButton;
 	}
+	public void limpiarError() {
+		errorLabel.setText("");
+	}
+	public void error() {
+		errorLabel.setText("Username o password no valido.");
+	}
 }

@@ -84,4 +84,19 @@ public class RegisterPanel extends JPanel {
 	public JButton getSalirButton() {
 		return salirButton;
 	}
+	public void limpiarErrores() {
+		errorLabel.setText("");
+	}
+	//error cuando intentamos registrarnos con un username que ya existe
+	public void error1() {
+		errorLabel.setText("Username ya existente, elija otro.");
+	}
+	//error cuando la conf_cont no es la misma que la cont
+	public void error2() {
+		errorLabel.setText("Password y confirmacion no son la misma.");
+	}
+	//error cuando username o password esta vacio e intentamos registrarnos
+	public void error3() {
+		errorLabel.setText("Username o password nulos.");
+	}
 }
