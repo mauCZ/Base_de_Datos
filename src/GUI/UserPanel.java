@@ -57,4 +57,7 @@ public class UserPanel extends JPanel {
 	public void addActionListener(ActionListener a) {
 		salirButton.addActionListener(a);
 	}
+	public JButton getSalirButton() {
+		return salirButton;
+	}
 }

@@ -1,12 +1,10 @@
 package GUI;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.awt.CardLayout;
+
+import java.awt.*;
+import java.awt.event.*;
 
 public class MainFrame extends JFrame {
 
@@ -37,9 +35,49 @@ public class MainFrame extends JFrame {
 		contentPane.add(userPanel,USER);
 		contentPane.add(registerPanel,REGISTER);
 		
-		
-			
-		
+		loginPanel.addActionListener(new ActionListener() {
+			@Override
+			/*
+			 * ESTAMOS EN EL PANEL LOGIN
+			 */
+			public void actionPerformed(ActionEvent e) {
+				JButton pres = (JButton)e.getSource();
+				
+				//si el boton presionado es SALIR
+				if(pres == loginPanel.getIniciarSesionButton()) {
+					cards.show(contentPane, USER);
+				}
+				//si el boton presionado es REGISTRAR
+				else if(pres == loginPanel.getRegistrarseButton()) {
+					cards.show(contentPane, REGISTER);
+				}
+			}
+		});
+		registerPanel.addActionListener(new ActionListener() {
+			@Override
+			//ESTAMOS EN EL PANEL REGISTRAR
+			public void actionPerformed(ActionEvent e) {
+				JButton pres = (JButton)e.getSource();
+				//si el boton que presionamos es REGISTRARSE volvemos a login pero con registro completo
+				if(pres == registerPanel.getRegistrarseButton()) {
+					cards.show(contentPane, LOGIN);
+				}
+				//si el boton presionado es SALIR
+				else if(pres == registerPanel.getSalirButton()) {
+					cards.show(contentPane	,LOGIN);	
+				}
+			}
+		});
+		userPanel.addActionListener(new ActionListener() {
+			@Override
+			//ESTAMOS EN PANEL DE USUARIO
+			public void actionPerformed(ActionEvent e) {
+				JButton pres = (JButton)e.getSource();
+				if(pres == userPanel.getSalirButton()) {
+					cards.show(contentPane, LOGIN);
+				}
+			}
+		});
 		setVisible(true);
 	}
 

@@ -54,4 +54,10 @@ public class LoginPanel extends JPanel {
 		iniSesionButton.addActionListener(a);
 		regButton.addActionListener(a);
 	}
+	public JButton getIniciarSesionButton() {
+		return iniSesionButton;
+	}
+	public JButton getRegistrarseButton() {
+		return regButton;
+	}
 }

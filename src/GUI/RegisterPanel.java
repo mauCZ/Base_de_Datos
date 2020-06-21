@@ -78,4 +78,10 @@ public class RegisterPanel extends JPanel {
 		registrarseButton.addActionListener(a);
 		salirButton.addActionListener(a);
 	}
+	public JButton getRegistrarseButton() {
+		return registrarseButton;
+	}
+	public JButton getSalirButton() {
+		return salirButton;
+	}
 }
