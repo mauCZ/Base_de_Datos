@@ -1,3 +1,4 @@
+package TBD;
 import java.sql.*;
 /*
  * Esta clase maneja una conexion, mas que todo para poder prenderla o apagarla
@@ -13,7 +14,7 @@ public class Conexion{
 	 * Prender conexion
 	 */
 public void conectar() throws SQLException{
-		String url = "jdbc:postgresql://localhost:5432/postgres";
+		String url = "jdbc:postgresql://localhost:5432/TBD";
 		conexion = DriverManager.getConnection(url,username,password);
 	}
 	public void apagar() throws SQLException{

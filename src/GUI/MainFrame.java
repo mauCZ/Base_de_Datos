@@ -2,10 +2,11 @@ package GUI;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLException;
 
+import TBD.*;
 public class MainFrame extends JFrame {
 
 	private JPanel contentPane;
@@ -18,7 +19,9 @@ public class MainFrame extends JFrame {
 	final static String LOGIN = "loginPanel";
 	final static String REGISTER = "registerPanel";
 	
-	public MainFrame() {
+	private DBManager db;
+	
+	public MainFrame(DBManager db) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 769, 565);
 		contentPane = new JPanel();
@@ -26,6 +29,8 @@ public class MainFrame extends JFrame {
 		setContentPane(contentPane);
 		cards = new CardLayout(0,0);
 		contentPane.setLayout(cards);
+		
+		this.db = db;
 		
 		loginPanel = new LoginPanel();
 		userPanel = new UserPanel();
@@ -40,12 +45,31 @@ public class MainFrame extends JFrame {
 			/*
 			 * ESTAMOS EN EL PANEL LOGIN
 			 */
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e){
 				JButton pres = (JButton)e.getSource();
 				
-				//si el boton presionado es SALIR
+				//si el boton presionado es INICIAR SESION
 				if(pres == loginPanel.getIniciarSesionButton()) {
-					cards.show(contentPane, USER);
+					//conectamos primero
+					try {
+						db.conectar();
+						String username = loginPanel.getUsername();
+						String password = loginPanel.getPassword();
+						int id = db.getID(username,password);
+						if(id == -1) {
+							loginPanel.error();
+							db.apagar();
+						}
+						else {
+							
+							cards.show(contentPane, USER);
+						}
+					}catch(SQLException ex) {
+						System.out.println(ex.getMessage());
+					}
+					
+					
+//					cards.show(contentPane, USER);
 				}
 				//si el boton presionado es REGISTRAR
 				else if(pres == loginPanel.getRegistrarseButton()) {

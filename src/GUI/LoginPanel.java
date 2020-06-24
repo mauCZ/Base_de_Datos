@@ -30,6 +30,7 @@ public class LoginPanel extends JPanel {
 		add(iniSesionButton);
 		
 		errorLabel = new JLabel("");
+		errorLabel.setForeground(Color.RED);
 		errorLabel.setBounds(346, 165, 250, 27);
 		add(errorLabel);
 		
@@ -47,7 +48,6 @@ public class LoginPanel extends JPanel {
 		passwordTextField = new JPasswordField();
 		passwordTextField.setBounds(346, 262, 250, 34);
 		add(passwordTextField);
-
 	}
 	//anhadimos listeners a los botones de loginPanel	
 	public void addActionListener(ActionListener a) {
@@ -63,7 +63,13 @@ public class LoginPanel extends JPanel {
 	public void limpiarError() {
 		errorLabel.setText("");
 	}
-	public void error() {
+	public void error	() {
 		errorLabel.setText("Username o password no valido.");
+	}
+	public String getUsername() {
+		return usernameTextField.getText();
+	}
+	public String getPassword() {
+		return new String(passwordTextField.getPassword());
 	}
 }
