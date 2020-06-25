@@ -66,6 +66,9 @@ public class LoginPanel extends JPanel {
 	public void error	() {
 		errorLabel.setText("Username o password no valido.");
 	}
+	public void error2() {
+		errorLabel.setText("Este usuario ya inicio sesion.");
+	}
 	public String getUsername() {
 		return usernameTextField.getText();
 	}

@@ -51,4 +51,29 @@ public class DBManager {
 		res.next();
 		return res.getBoolean(1);
 	}
+	
+	//retorna el P.I.D.
+	public int getPID() throws SQLException{
+		Statement stm = conexion.getConexion().createStatement();
+		String querie = "select pg_backend_pid();";
+		ResultSet res = stm.executeQuery(querie);
+		res.next();
+		return res.getInt(1);
+	}
+	
+	//retorna true si un usuario especifico esta registrado en B.D.
+	public boolean estaRegistrado(String username,String password) throws SQLException{
+		Statement stm = conexion.getConexion().createStatement();
+		String querie = "select estaRegistrado('"+username+"','"+password+"');";
+		ResultSet res = stm.executeQuery(querie);
+		res.next();
+		return res.getBoolean(1);
+	}
+	
+	//registramos un nuevo usuario
+	public  void registrarUsuario(String username, String password) throws SQLException{
+		Statement stm = conexion.getConexion().createStatement();
+		String querie = "call registrar_usuario('"+username+"','"+password+"');";
+		stm.executeUpdate(querie);
+	}
 }

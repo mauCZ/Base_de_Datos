@@ -68,7 +68,7 @@ public class RegisterPanel extends JPanel {
 		errorLabel.setForeground(Color.RED);
 		errorLabel.setFont(new Font("Dialog", Font.BOLD, 15));
 		errorLabel.setToolTipText("");
-		errorLabel.setBounds(341, 112, 248, 34);
+		errorLabel.setBounds(341, 112, 341, 34);
 		add(errorLabel);
 		
 		
@@ -77,6 +77,15 @@ public class RegisterPanel extends JPanel {
 	public void addActionListener(ActionListener a) {
 		registrarseButton.addActionListener(a);
 		salirButton.addActionListener(a);
+	}
+	public String getUsername() {
+		return usernameTextField.getText();
+	}
+	public String getPassword() {
+		return new String(passwordTextField.getPassword());
+	}
+	public String getConfPass() {
+		return new String(confPasswordTextField.getPassword());
 	}
 	public JButton getRegistrarseButton() {
 		return registrarseButton;
@@ -98,5 +107,29 @@ public class RegisterPanel extends JPanel {
 	//error cuando username o password esta vacio e intentamos registrarnos
 	public void error3() {
 		errorLabel.setText("Username o password nulos.");
+	}
+	
+	//retorna true si hasta ahora los datos y la consistencia son correctos,
+	//sin embargo no nos fijamos si los datos ya pertenecen a un usuario registrado
+	public boolean correcto() {
+		boolean correcto = true;
+		String u = usernameTextField.getText();
+		String p = new String(passwordTextField.getPassword());
+		String cp = new String(confPasswordTextField.getPassword());
+		correcto &= (u.length() > 0 && p.length()> 0);
+		if(!correcto) {
+			error3(); return false;
+		}
+		correcto &= (p.equals(cp));
+		if(!correcto) {
+			error2(); return false;
+		}
+		return correcto;
+	}
+	
+	public void limpiarTextFields() {
+		usernameTextField.setText("");
+		passwordTextField.setText("");
+		confPasswordTextField.setText("");
 	}
 }

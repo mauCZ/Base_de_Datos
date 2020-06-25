@@ -60,4 +60,18 @@ public class UserPanel extends JPanel {
 	public JButton getSalirButton() {
 		return salirButton;
 	}
+	public JLabel getActUsername() {
+		return actUsername;
+	}
+	public JLabel getActPassword() {
+		return actPassword;
+	}
+	public JLabel getActPID() {
+		return actPid;
+	}
+	public void limpiar() {
+		actUsername.setText("");
+		actPassword.setText("");
+		actPid.setText("");
+	}
 }

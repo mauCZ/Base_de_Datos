@@ -15,6 +15,8 @@ public class MainFrame extends JFrame {
 	private UserPanel userPanel;
 	private RegisterPanel registerPanel;
 	
+	private int id;
+	
 	final static String USER = "userPanel";
 	final static String LOGIN = "loginPanel";
 	final static String REGISTER = "registerPanel";
@@ -55,24 +57,33 @@ public class MainFrame extends JFrame {
 						db.conectar();
 						String username = loginPanel.getUsername();
 						String password = loginPanel.getPassword();
-						int id = db.getID(username,password);
-						if(id == -1) {
+						id = db.getID(username,password);
+						// si el username o password son erroneos
+						if(id == -1) { 
 							loginPanel.error();
 							db.apagar();
 						}
+						//si el usuario ya esta loggeado
+						else if(db.estaConectado(id)) {
+							loginPanel.error2();
+							db.apagar();
+						}
+						//sino, accedemos
 						else {
-							
+							db.usuario_activo(id);
+							int pid = db.getPID();
+							userPanel.getActUsername().setText(username);
+							userPanel.getActPassword().setText(password);
+							userPanel.getActPID().setText(Integer.toString(pid));
 							cards.show(contentPane, USER);
 						}
 					}catch(SQLException ex) {
 						System.out.println(ex.getMessage());
 					}
-					
-					
-//					cards.show(contentPane, USER);
 				}
 				//si el boton presionado es REGISTRAR
 				else if(pres == loginPanel.getRegistrarseButton()) {
+					registerPanel.limpiarErrores();
 					cards.show(contentPane, REGISTER);
 				}
 			}
@@ -84,10 +95,32 @@ public class MainFrame extends JFrame {
 				JButton pres = (JButton)e.getSource();
 				//si el boton que presionamos es REGISTRARSE volvemos a login pero con registro completo
 				if(pres == registerPanel.getRegistrarseButton()) {
-					cards.show(contentPane, LOGIN);
+					String u = registerPanel.getUsername();
+					String p = registerPanel.getPassword();
+					String cp = registerPanel.getConfPass();
+					try {
+						db.conectar();
+						if(registerPanel.correcto()) {
+							if(!db.estaRegistrado(u, p)) {
+								db.registrarUsuario(u, p);
+								registerPanel.limpiarErrores();
+								registerPanel.limpiarTextFields();
+								db.apagar();
+								cards.show(contentPane, LOGIN);
+							}
+							else {
+								registerPanel.error1();
+							}
+						}
+					}catch(SQLException ex) {
+						System.out.println(ex.getMessage());
+					}
+					
 				}
 				//si el boton presionado es SALIR
 				else if(pres == registerPanel.getSalirButton()) {
+					
+					loginPanel.limpiarError();
 					cards.show(contentPane	,LOGIN);	
 				}
 			}
@@ -98,6 +131,14 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				JButton pres = (JButton)e.getSource();
 				if(pres == userPanel.getSalirButton()) {
+					userPanel.limpiar();
+					try {
+						db.usuario_inactivo(id);
+						db.apagar();
+					}catch(SQLException ex) {
+						System.out.println(ex.getMessage());
+					}
+					loginPanel.limpiarError();
 					cards.show(contentPane, LOGIN);
 				}
 			}
