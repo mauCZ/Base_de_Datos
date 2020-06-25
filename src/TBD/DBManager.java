@@ -76,4 +76,11 @@ public class DBManager {
 		String querie = "call registrar_usuario('"+username+"','"+password+"');";
 		stm.executeUpdate(querie);
 	}
+	
+	//registramos sesion
+	public void registrarSesion(int id) throws SQLException{
+		Statement stm = conexion.getConexion().createStatement();
+		String querie = "call registrar_sesion("+id+");";
+		stm.executeUpdate(querie);
+	}
 }
