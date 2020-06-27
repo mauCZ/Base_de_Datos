@@ -78,9 +78,15 @@ public class DBManager {
 	}
 	
 	//registramos sesion
-	public void registrarSesion(int id) throws SQLException{
+	public void iniciarSesion(int id) throws SQLException{
 		Statement stm = conexion.getConexion().createStatement();
-		String querie = "call registrar_sesion("+id+");";
+		String querie = "call iniciar_sesion("+id+");";
+		stm.executeUpdate(querie);
+	}
+	
+	public void terminarSesion(int id) throws SQLException{
+		Statement stm = conexion.getConexion().createStatement();
+		String querie = "call terminar_sesion("+id+");";
 		stm.executeUpdate(querie);
 	}
 }
