@@ -1,5 +1,6 @@
 package GUI;
 
+import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -49,6 +50,10 @@ public class EstudiantePanel extends JPanel {
 	}
 	public void limpiar() {
 		estudianteLabel.setText("");
-		
+	}
+	public void setFunciones(ArrayList<String> funciones) {
+		for(String f : funciones) {
+			funcionesComboBox.addItem(f);;
+		}
 	}
 }

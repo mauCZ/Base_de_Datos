@@ -1,6 +1,6 @@
 package TBD;
 import java.sql.*;
-
+import java.util.ArrayList;
 public class DBManager {
 	private Conexion conexion;
 	
@@ -108,5 +108,24 @@ public class DBManager {
 		ResultSet res = stm.executeQuery(querie);
 		res.next();
 		return res.getString(1);
+	}
+	
+	public ArrayList<String> getFunciones(String rol) throws SQLException{
+		Statement stm = conexion.getConexion().createStatement();
+		String querie = "select uno.nombre from\n" + 
+				"	(select rol_id,nombre\n" + 
+				"	from rol_funcion\n" + 
+				"	join funcion \n" + 
+				"	on rol_funcion.funcion_id = funcion.id\n" + 
+				"	) as uno\n" + 
+				"join rol\n" + 
+				"on rol.id = uno.rol_id\n" + 
+				"where rol.nombre='"+rol+"';";
+		ArrayList<String> funciones = new ArrayList<>();
+		ResultSet res = stm.executeQuery(querie);
+		while(res.next()) {
+			funciones.add(res.getString(1));
+		}
+		return funciones;
 	}
 }

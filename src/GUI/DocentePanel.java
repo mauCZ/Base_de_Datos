@@ -5,6 +5,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JComboBox;
 import javax.swing.JButton;
@@ -49,6 +50,10 @@ public class DocentePanel extends JPanel {
 	}
 	public void limpiar() {
 		docenteLabel.setText("");
-		
+	}
+	public void setFunciones(ArrayList<String> funciones) {
+		for(String f : funciones) {
+			funcionesComboBox.addItem(f);;
+		}
 	}
 }

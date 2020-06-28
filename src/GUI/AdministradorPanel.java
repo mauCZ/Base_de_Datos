@@ -2,6 +2,7 @@ package GUI;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class AdministradorPanel extends JPanel {
 	
@@ -31,5 +32,10 @@ public class AdministradorPanel extends JPanel {
 	}
 	public void addActionListener(ActionListener a) {
 		salirButton.addActionListener(a);
+	}
+	public void setFunciones(ArrayList<String> funciones) {
+		for(String f : funciones) {
+			funcionesComboBox.addItem(f);;
+		}
 	}
 }

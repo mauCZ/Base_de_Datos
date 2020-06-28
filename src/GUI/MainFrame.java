@@ -1,6 +1,7 @@
 package GUI;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
@@ -118,8 +119,7 @@ public class MainFrame extends JFrame {
 									estudiantePanel.setEstudianteNombre(nombre);
 									db.usuario_activo(id);
 									db.iniciarSesion(id);
-									
-									
+									estudiantePanel.setFunciones(db.getFunciones(rolNecesario));
 									
 									
 								}catch(SQLException ex) {
@@ -134,7 +134,7 @@ public class MainFrame extends JFrame {
 									docentePanel.setDocenteNombre(nombre);
 									db.usuario_activo(id);
 									db.iniciarSesion(id);
-									
+									docentePanel.setFunciones(db.getFunciones(rolNecesario));
 									
 								}catch(SQLException ex) {
 									System.out.println(ex.getMessage());
@@ -146,7 +146,7 @@ public class MainFrame extends JFrame {
 									db.conectar();
 									db.usuario_activo(id);
 									db.iniciarSesion(id);
-									
+									administradorPanel.setFunciones(db.getFunciones(rolNecesario));
 									
 								}catch(SQLException ex) {
 									System.out.println(ex.getMessage());
@@ -200,5 +200,4 @@ public class MainFrame extends JFrame {
 		
 		setVisible(true);
 	}
-
 }
