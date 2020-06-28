@@ -61,6 +61,14 @@ public class DBManager {
 		return res.getInt(1);
 	}
 	
+	public String getNombreUsuario(int id) throws SQLException{
+		Statement stm = conexion.getConexion().createStatement();
+		String querie = "select username from usuario where id ="+id+";";
+		ResultSet res = stm.executeQuery(querie);
+		res.next();
+		return res.getString(1);
+	}
+	
 	//retorna true si un usuario especifico esta registrado en B.D.
 	public boolean estaRegistrado(String username,String password) throws SQLException{
 		Statement stm = conexion.getConexion().createStatement();
@@ -88,5 +96,17 @@ public class DBManager {
 		Statement stm = conexion.getConexion().createStatement();
 		String querie = "call terminar_sesion("+id+");";
 		stm.executeUpdate(querie);
+	}
+	
+	public String getRol(int id) throws SQLException{
+		Statement stm = conexion.getConexion().createStatement();
+		String querie = "select rol.nombre from rol, \n" + 
+				"(select usuario_rol.rol_id \n" + 
+				"	from usuario_rol, (select id from usuario where id="+id+") as uno\n" + 
+				"	where usuario_rol.usuario_id = uno.id) as dos\n" + 
+				"where rol.id = dos.rol_id;";
+		ResultSet res = stm.executeQuery(querie);
+		res.next();
+		return res.getString(1);
 	}
 }

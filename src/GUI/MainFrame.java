@@ -12,12 +12,15 @@ public class MainFrame extends JFrame {
 	private JPanel contentPane;
 	private CardLayout cards;
 	private LoginPanel loginPanel;
-//	private UserPanel userPanel;
+	private DocentePanel docentePanel;
+	private EstudiantePanel estudiantePanel;
+	private AdministradorPanel administradorPanel;
 	
 	private int id;
-	
-	final static String USER = "userPanel";
 	final static String LOGIN = "loginPanel";
+	final static String ESTUDIANTE = "estudiantePanel";
+	final static String DOCENTE = "docentePanel";
+	final static String ADMINISTRADOR = "adminPanel";
 	
 	private DBManager db;
 	
@@ -30,14 +33,54 @@ public class MainFrame extends JFrame {
 		cards = new CardLayout(0,0);
 		contentPane.setLayout(cards);
 		
+		docentePanel = new DocentePanel();
+		estudiantePanel = new EstudiantePanel();
+		administradorPanel = new AdministradorPanel();
 		this.db = db;
-		
 		loginPanel = new LoginPanel();
 		loginPanel.getIniciarSesionButton().setLocation(293, 326);
-//		userPanel = new UserPanel();
-		
 		contentPane.add(loginPanel,LOGIN);
-//		contentPane.add(userPanel,USER);
+		
+		contentPane.add(docentePanel,DOCENTE);
+		contentPane.add(estudiantePanel,ESTUDIANTE);
+		contentPane.add(administradorPanel,ADMINISTRADOR);
+		
+		docentePanel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				try {
+					db.usuario_inactivo(id);
+					db.terminarSesion(id);
+					db.apagar();
+				}catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+				cards.show(contentPane, LOGIN);
+			}
+		});
+		estudiantePanel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				try {
+					db.usuario_inactivo(id);
+					db.terminarSesion(id);
+					db.apagar();
+				}catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+				cards.show(contentPane, LOGIN);
+			}
+		});
+		administradorPanel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				try {
+					db.terminarSesion(id);
+					db.usuario_inactivo(id);
+					db.apagar();
+				}catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+				}
+				cards.show(contentPane, LOGIN);
+			}
+		});
 		
 		loginPanel.addActionListener(new ActionListener() {
 			@Override
@@ -65,15 +108,51 @@ public class MainFrame extends JFrame {
 							loginPanel.error2();
 							db.apagar();
 						}
-						//sino, accedemos
+						//sino, accedemos a un panel dependiendo si es est, doc o admin
 						else {
-//							db.usuario_activo(id);
-//							int pid = db.getPID();
-//							userPanel.getActUsername().setText(username);
-//							userPanel.getActPassword().setText(password);
-//							userPanel.getActPID().setText(Integer.toString(pid));
-//							db.iniciarSesion(id);
-//							cards.show(contentPane, USER);
+							String rolNecesario = db.getRol(id);
+							if(rolNecesario.equals("Estudiante")) {
+								try {
+									db.conectar();
+									String nombre = db.getNombreUsuario(id);
+									estudiantePanel.setEstudianteNombre(nombre);
+									db.usuario_activo(id);
+									db.iniciarSesion(id);
+									
+									
+									
+									
+								}catch(SQLException ex) {
+									System.out.println(ex.getMessage());
+								}
+								cards.show(contentPane, ESTUDIANTE);
+							}
+							else if(rolNecesario.equals("Docente")) {
+								try {
+									db.conectar();
+									String nombre = db.getNombreUsuario(id);
+									docentePanel.setDocenteNombre(nombre);
+									db.usuario_activo(id);
+									db.iniciarSesion(id);
+									
+									
+								}catch(SQLException ex) {
+									System.out.println(ex.getMessage());
+								}
+								cards.show(contentPane, DOCENTE);
+							}
+							else if(rolNecesario.equals("Administrador")) {
+								try {
+									db.conectar();
+									db.usuario_activo(id);
+									db.iniciarSesion(id);
+									
+									
+								}catch(SQLException ex) {
+									System.out.println(ex.getMessage());
+								}
+								cards.show(contentPane, ADMINISTRADOR);
+							}
 						}
 					}catch(SQLException ex) {
 						System.out.println(ex.getMessage());
@@ -118,25 +197,7 @@ public class MainFrame extends JFrame {
 //				}
 //			}
 //		});
-		userPanel.addActionListener(new ActionListener() {
-			@Override
-			//ESTAMOS EN PANEL DE USUARIO
-			public void actionPerformed(ActionEvent e) {
-				JButton pres = (JButton)e.getSource();
-				if(pres == userPanel.getSalirButton()) {
-					userPanel.limpiar();
-					try {
-						db.usuario_inactivo(id);
-						db.terminarSesion(id);
-						db.apagar();
-					}catch(SQLException ex) {
-						System.out.println(ex.getMessage());
-					}
-					loginPanel.limpiarError();
-					cards.show(contentPane, LOGIN);
-				}
-			}
-		});
+		
 		setVisible(true);
 	}
 

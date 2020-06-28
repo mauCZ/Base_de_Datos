@@ -44,4 +44,11 @@ public class EstudiantePanel extends JPanel {
 	public void addActionListener(ActionListener a) {
 		salirButton.addActionListener(a);
 	}
+	public void setEstudianteNombre(String estudiante) {
+		estudianteLabel.setText(estudiante);
+	}
+	public void limpiar() {
+		estudianteLabel.setText("");
+		
+	}
 }
