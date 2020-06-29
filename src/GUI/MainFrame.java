@@ -1,8 +1,14 @@
 package GUI;
 
 import javax.swing.*;
+
 import java.util.ArrayList;
 import javax.swing.border.EmptyBorder;
+
+import Funcionalidades.MateriasDisponiblesDialog;
+import Funcionalidades.PostuladosDialog;
+import Funcionalidades.PostularMateriaDialog;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
@@ -58,11 +64,57 @@ public class MainFrame extends JFrame {
 				cards.show(contentPane, LOGIN);
 			}
 		});
+		estudiantePanel.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent ev) {
+				JComboBox c = estudiantePanel.getFuncionesComboBox();
+				String s = String.valueOf(c.getSelectedItem());
+				if(ev.getStateChange() == ItemEvent.SELECTED) {
+					if(s.equals("lista_postulados")) {
+						try {
+							ArrayList<String> pos = db.getPostulaciones();
+							PostuladosDialog p = new PostuladosDialog(pos);
+							
+						}catch(SQLException ex) {
+							System.out.println(ex.getMessage());
+						}
+					}
+					else if(s.equals("ver_materias_disponibles")) {
+						try {
+							ArrayList<String> ma = db.getMateriasDisponibles();
+							MateriasDisponiblesDialog m = new MateriasDisponiblesDialog(ma);
+						}catch(SQLException ex) {
+							System.out.println(ex.getMessage());
+						}
+					}
+					else if(s.equals("postular_materia")) {
+						try {
+							ArrayList<String> ma = db.getMateriasDisponibles();
+							PostularMateriaDialog po = new PostularMateriaDialog(ma);
+							po.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent ev) {
+									
+								}
+							});
+							po.addItemListener(new ItemListener() {
+								public void itemStateChanged(ItemEvent ev) {
+									if(ev.getStateChange()==ItemEvent.SELECTED) {
+										
+									}
+								}
+							});
+						}catch(SQLException ex) {
+							System.out.println(ex.getMessage());
+						}
+					}
+				}
+			}
+		});
 		estudiantePanel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 				try {
 					db.usuario_inactivo(id);
 					db.terminarSesion(id);
+					estudiantePanel.limpiar();
 					db.apagar();
 				}catch(SQLException ex) {
 					System.out.println(ex.getMessage());
@@ -84,7 +136,6 @@ public class MainFrame extends JFrame {
 		});
 		
 		loginPanel.addActionListener(new ActionListener() {
-			@Override
 			/*
 			 * ESTAMOS EN EL PANEL LOGIN
 			 */
@@ -114,7 +165,6 @@ public class MainFrame extends JFrame {
 							String rolNecesario = db.getRol(id);
 							if(rolNecesario.equals("Estudiante")) {
 								try {
-									db.conectar();
 									String nombre = db.getNombreUsuario(id);
 									estudiantePanel.setEstudianteNombre(nombre);
 									db.usuario_activo(id);
@@ -129,7 +179,6 @@ public class MainFrame extends JFrame {
 							}
 							else if(rolNecesario.equals("Docente")) {
 								try {
-									db.conectar();
 									String nombre = db.getNombreUsuario(id);
 									docentePanel.setDocenteNombre(nombre);
 									db.usuario_activo(id);
@@ -143,7 +192,6 @@ public class MainFrame extends JFrame {
 							}
 							else if(rolNecesario.equals("Administrador")) {
 								try {
-									db.conectar();
 									db.usuario_activo(id);
 									db.iniciarSesion(id);
 									administradorPanel.setFunciones(db.getFunciones(rolNecesario));

@@ -9,7 +9,7 @@ public class Main {
 //		DBManager db = new DBManager(new Conexion("tbd","tbd"));
 //		try {
 //			db.conectar();
-//			System.out.println(db.getFunciones("Administrador"));
+//			System.out.println(db.getPostulaciones());
 //		}catch(SQLException e) {
 //			System.out.println(e.getMessage());
 //		}

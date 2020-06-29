@@ -128,4 +128,29 @@ public class DBManager {
 		}
 		return funciones;
 	}
+	
+	public ArrayList<String> getMateriasDisponibles() throws SQLException{
+		Statement stm = conexion.getConexion().createStatement();
+		String querie = "select nombre from asignatura where disponible = true;";
+		ArrayList<String> funciones = new ArrayList<>();
+		ResultSet res = stm.executeQuery(querie);
+		while(res.next()) {
+			funciones.add(res.getString(1));
+		}
+		return funciones;
+	}
+	
+	public ArrayList<String> getPostulaciones() throws SQLException{
+		Statement stm = conexion.getConexion().createStatement();
+		String querie = "select e.nombre,p.gestion,a.nombre\n" + 
+				"from estudiante as e,postulante as p,asignatura as a\n" + 
+				"where e.id = p.estudiante_id and p.asignatura_id=a.id;";
+		ArrayList<String> funciones = new ArrayList<>();
+		ResultSet res = stm.executeQuery(querie);
+		while(res.next()) {
+			funciones.add(String.valueOf(res.getString(1))+" | "+String.valueOf(res.getString(2))+" | "+
+					String.valueOf(res.getString(3)));
+		}
+		return funciones;
+	}
 }
