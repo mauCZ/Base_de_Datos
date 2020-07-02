@@ -132,14 +132,23 @@ public class DBManager {
 	public ArrayList<String> getMateriasDisponibles() throws SQLException{
 		Statement stm = conexion.getConexion().createStatement();
 		String querie = "select nombre from asignatura where disponible = true;";
-		ArrayList<String> funciones = new ArrayList<>();
+		ArrayList<String> materias = new ArrayList<>();
 		ResultSet res = stm.executeQuery(querie);
 		while(res.next()) {
-			funciones.add(res.getString(1));
+			materias.add(res.getString(1));
 		}
-		return funciones;
+		return materias;
 	}
-	
+	public ArrayList<String> getMateriasNoDisponibles() throws SQLException{
+		Statement stm = conexion.getConexion().createStatement();
+		String querie = "select nombre from asignatura where disponible = false";
+		ArrayList<String> materias = new ArrayList<>();
+		ResultSet res = stm.executeQuery(querie);
+		while(res.next()) {
+			materias.add(res.getString(1));
+		}
+		return materias;
+	}
 	public ArrayList<String> getPostulaciones() throws SQLException{
 		Statement stm = conexion.getConexion().createStatement();
 		String querie = "select e.nombre,p.gestion,a.nombre\n" + 
@@ -152,5 +161,31 @@ public class DBManager {
 					String.valueOf(res.getString(3)));
 		}
 		return funciones;
+	}
+	
+	public int getIDMateria(String materia) throws SQLException{
+		Statement st = conexion.getConexion().createStatement();
+		ResultSet re = st.executeQuery("select id from asignatura where nombre='"+materia+"';");
+		re.next();
+		int idMateria = re.getInt(1);
+		return idMateria;
+	}
+	public void postularEstudiante(int id,String materia) throws SQLException{
+		int idMateria = getIDMateria(materia);
+		Statement stm = conexion.getConexion().createStatement();
+		String querie = "insert into postulante (gestion,estudiante_id,asignatura_id) values("
+				+ "(select extract( year from current_date)),"+id+","+idMateria+");";
+		stm.executeUpdate(querie);
+	}
+	
+	public void validarMateria(int id) throws SQLException{
+		Statement stm = conexion.getConexion().createStatement();
+		String querie = "update asignatura set disponible = true where id = "+id+";";
+		stm.executeUpdate(querie);
+	}
+	public void retirarMateria(int id) throws SQLException{
+		Statement stm = conexion.getConexion().createStatement();
+		String querie = "update asignatura set disponible = false where id = "+id+";";
+		stm.executeUpdate(querie);
 	}
 }

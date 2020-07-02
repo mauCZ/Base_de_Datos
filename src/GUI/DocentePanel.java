@@ -1,16 +1,8 @@
 package GUI;
-
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import java.awt.Font;
-import java.awt.event.ActionListener;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
-
-import javax.swing.JComboBox;
-import javax.swing.JButton;
-import java.awt.Color;
-
 public class DocentePanel extends JPanel {
 	
 	private JLabel l1,docenteLabel;
@@ -45,15 +37,23 @@ public class DocentePanel extends JPanel {
 	public void addActionListener(ActionListener a) {
 		salirButton.addActionListener(a);
 	}
+	public void addItemListener(ItemListener i) {
+		funcionesComboBox.addItemListener(i);
+	}
 	public void setDocenteNombre(String docente) {
 		docenteLabel.setText(docente);
 	}
 	public void limpiar() {
 		docenteLabel.setText("");
+		funcionesComboBox.removeAllItems();
 	}
 	public void setFunciones(ArrayList<String> funciones) {
+		funcionesComboBox.addItem("");
 		for(String f : funciones) {
 			funcionesComboBox.addItem(f);;
 		}
+	}
+	public JComboBox getFuncionesComboBox() {
+		return funcionesComboBox;
 	}
 }

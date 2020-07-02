@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import javax.swing.border.EmptyBorder;
 
+import Funcionalidades.ActualizarMateriaDialog;
 import Funcionalidades.MateriasDisponiblesDialog;
 import Funcionalidades.PostuladosDialog;
 import Funcionalidades.PostularMateriaDialog;
@@ -52,11 +53,29 @@ public class MainFrame extends JFrame {
 		contentPane.add(estudiantePanel,ESTUDIANTE);
 		contentPane.add(administradorPanel,ADMINISTRADOR);
 		
+		docentePanel.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent ev) {
+				JComboBox c = administradorPanel.getFuncionesComboBox();
+				String s = String.valueOf(c.getSelectedItem());
+				if(ev.getStateChange() == ItemEvent.SELECTED) {
+					if(s.equals("lista_postulados")) {
+						try {
+							ArrayList<String> pos = db.getPostulaciones();
+							PostuladosDialog p = new PostuladosDialog(pos);
+							
+						}catch(SQLException ex) { System.out.println(ex.getMessage());}
+					}
+					
+					
+				}
+			}
+		});
 		docentePanel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 				try {
 					db.usuario_inactivo(id);
 					db.terminarSesion(id);
+					docentePanel.limpiar();
 					db.apagar();
 				}catch(SQLException ex) {
 					System.out.println(ex.getMessage());
@@ -89,21 +108,12 @@ public class MainFrame extends JFrame {
 					else if(s.equals("postular_materia")) {
 						try {
 							ArrayList<String> ma = db.getMateriasDisponibles();
-							PostularMateriaDialog po = new PostularMateriaDialog(ma);
-							po.addActionListener(new ActionListener() {
-								public void actionPerformed(ActionEvent ev) {
-									
-								}
-							});
-							po.addItemListener(new ItemListener() {
-								public void itemStateChanged(ItemEvent ev) {
-									if(ev.getStateChange()==ItemEvent.SELECTED) {
-										
-									}
-								}
-							});
+							PostularMateriaDialog po = new PostularMateriaDialog(id,ma,db);
+							
 						}catch(SQLException ex) {
-							System.out.println(ex.getMessage());
+							if(ex.getSQLState().equals(String.valueOf(23505))) {
+								
+							}
 						}
 					}
 				}
@@ -122,11 +132,38 @@ public class MainFrame extends JFrame {
 				cards.show(contentPane, LOGIN);
 			}
 		});
+		administradorPanel.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent ev) {
+				JComboBox c = administradorPanel.getFuncionesComboBox();
+				String s = String.valueOf(c.getSelectedItem());
+				if(ev.getStateChange() == ItemEvent.SELECTED) {
+					if(s.equals("lista_postulados")) {
+						try {
+							ArrayList<String> pos = db.getPostulaciones();
+							PostuladosDialog p = new PostuladosDialog(pos);
+							
+						}catch(SQLException ex) { System.out.println(ex.getMessage());}
+					}
+					else if(s.equals("ver_materias_disponibles")) {
+						try {
+							ArrayList<String> ma = db.getMateriasDisponibles();
+							MateriasDisponiblesDialog m = new MateriasDisponiblesDialog(ma);
+						}catch(SQLException ex) {
+							System.out.println(ex.getMessage());
+						}
+					}
+					else if(s.equals("actualizar_materia")) {
+						ActualizarMateriaDialog m = new ActualizarMateriaDialog(id,db);
+					}
+				}
+			}
+		});
 		administradorPanel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 				try {
 					db.terminarSesion(id);
 					db.usuario_inactivo(id);
+					administradorPanel.limpiar();
 					db.apagar();
 				}catch(SQLException ex) {
 					System.out.println(ex.getMessage());

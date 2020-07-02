@@ -2,7 +2,10 @@ package Funcionalidades;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import TBD.DBManager;
+
 import java.awt.event.*;
+import java.sql.SQLException;
 import java.awt.*;
 import java.util.ArrayList;
 public class PostularMateriaDialog extends JDialog {
@@ -11,7 +14,9 @@ public class PostularMateriaDialog extends JDialog {
 	JComboBox materiasComboBox;
 	JLabel errorLabel,lblPostularse,lblNewLabel;
 	JButton postularButton;
-	public PostularMateriaDialog(ArrayList<String> materias) {
+	DBManager db;
+	public PostularMateriaDialog(int id,ArrayList<String> materias,DBManager db) {
+		this.db = db;
 		setBounds(100, 100, 557, 338);
 		getContentPane().setLayout(null);
 		contentPanel.setBounds(0, 0, 555, 307);
@@ -45,6 +50,20 @@ public class PostularMateriaDialog extends JDialog {
 		
 		postularButton = new JButton("POSTULAR");
 		postularButton.setBounds(383, 147, 105, 27);
+		
+		postularButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				try {
+					errorLabel.setText("");
+					db.postularEstudiante(id, String.valueOf(materiasComboBox.getSelectedItem()));
+					errorLabel.setText("TE POSTULASTE!!");
+				}catch(SQLException ex) {
+					if(ex.getSQLState().equals(String.valueOf(23505))) {
+						error();
+					}
+				}
+			}
+		});
 		contentPanel.add(postularButton);
 		materiasComboBox.addItem("");
 		for(String m : materias) {
@@ -62,5 +81,8 @@ public class PostularMateriaDialog extends JDialog {
 	}
 	public void error() {
 		errorLabel.setText("ya te postulaste a esta materia");
+	}
+	public JButton getPostularseButton() {
+		return postularButton;
 	}
 }

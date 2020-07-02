@@ -56,7 +56,7 @@ public class PostuladosDialog extends JDialog {
 		getContentPane().add(lblNewLabel_3);
 		
 		for(String s : postulaciones) {
-			area.append(s);
+			area.append(s+'\n');
 		}
 		
 		setModal(true);

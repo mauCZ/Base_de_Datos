@@ -33,9 +33,19 @@ public class AdministradorPanel extends JPanel {
 	public void addActionListener(ActionListener a) {
 		salirButton.addActionListener(a);
 	}
+	public void addItemListener(ItemListener i) {
+		funcionesComboBox.addItemListener(i);
+	}
 	public void setFunciones(ArrayList<String> funciones) {
+		funcionesComboBox.addItem("");
 		for(String f : funciones) {
 			funcionesComboBox.addItem(f);;
 		}
+	}
+	public JComboBox getFuncionesComboBox() {
+		return funcionesComboBox;
+	}
+	public void limpiar() {
+		funcionesComboBox.removeAllItems();
 	}
 }
